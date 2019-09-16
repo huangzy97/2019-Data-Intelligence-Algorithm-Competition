@@ -20,9 +20,7 @@ def prepro():
     print('train date gap',trian.order_pay_time.max(),trian.order_pay_time.min())
     trian['order_pay_time'] = pd.to_datetime(trian['order_pay_time'])
     trian['order_pay_date'] = trian['order_pay_time'].dt.date
-    '''
-    提供了2013年全年的数据，2013-12-31 23:59:44 2013-01-01 00:00:18
-    '''
+
     # 预处理
     trian['is_customer_rate'] = trian['is_customer_rate'].fillna(0)
     trian['order_detail_amount'] = trian['order_detail_amount'].fillna(0)

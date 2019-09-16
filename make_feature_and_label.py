@@ -18,15 +18,7 @@ def make_feature_and_label(date1,date2,isSubmit):
     last_time = date1.groupby(['customer_id'],as_index=False)['order_pay_date'].agg({'order_pay_date_last':'max','order_pay_date_first':'min'})
 # customer_province
 # =============================================================================
-#     province_1 = date1.groupby(['customer_id','customer_province'],as_index=False)['count'].agg({'count':'count'})
-#     province_2 = province_1[['customer_id','count']].groupby(by='customer_id',as_index=False).max()
-#     customer_province = pd.merge(province_2,province_1,on=['customer_id','count'],how='left')
-#     del customer_province['count']
-#     customer_province = customer_province.drop_duplicates(subset = ['customer_id'], keep = 'first')
-# ################################################### 当然这里面还可以构造更多的特征
-# =============================================================================
     order_total_discount = date1.groupby(['customer_id'],as_index=False)['order_total_discount'].agg({'order_total_discount_max':'max','order_total_discount_sum':'sum','order_total_discount_mean':'mean'})
-    #order_detail_discount = date1.groupby(['customer_id'],as_index=False)['order_detail_discount'].agg({'order_detail_discount_max':'max','order_detail_discount_sum':'sum','order_detail_discount_mean':'mean'})
 # 是否支持折扣 goods_has_discount
     goods_has_discount_0 = date1[date1['goods_has_discount']==0].groupby(['customer_id'],as_index=False)['count'].agg({'count_goods_has_discount_0':'count'})
     goods_has_discount_1 = date1[date1['goods_has_discount']==1].groupby(['customer_id'],as_index=False)['count'].agg({'count_goods_has_discount_1':'count'})
@@ -153,9 +145,6 @@ def make_feature_and_label(date1,date2,isSubmit):
     for col in var_to_encode:
         data[col] = le.fit_transform(data[col].astype(str))
     data = pd.get_dummies(data, columns=var_to_encode)
-#    data['long_time'] = pd.to_datetime(data['order_pay_date_2']) - pd.to_datetime(data['order_pay_date_1'])
-#    data['long_time'] = data['long_time'].dt.days + 1
-#    del data['order_pay_date_first']
     del data['order_pay_date_1']
     del data['order_pay_date_2']
     del data['order_pay_date_3']
